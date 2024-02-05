@@ -12,23 +12,27 @@ const gameBoard = (function CreateGameboard() {
         }
     }
 
-    const winningCombos = [
+   
+    //Winnging Combos
+    const winCombos = [
     // horizontal 3-in-a-rows
-    [board[0][0], board[0][1], board[0][2]],
-    [board[1][0], board[1][1], board[1][2]],
-    [board[2][0], board[2][1], board[2][2]],
+    [[0,0], [0,1], [0,2]],
+    [[1,0], [1,1], [1,2]],
+    [[2,0], [2,1], [2,2]],
     // vertical 3-in-a-rows
-    [board[0][0], board[1][0], board[2][1]],
-    [board[0][1], board[1][1], board[2][1]],
-    [board[0][2], board[1][2], board[2][2]],
+    [[0,0], [1,0], [2,0]],
+    [[0,1], [1,1], [2,1]],
+    [[0,2], [1,2], [2,2]],
     // diagonal 3-in-a-rows
-    [board[0][0], board[1][1], board[2][2]],
-    [board[0][2], board[1][1], board[2][0]],
-
+    [[0,0], [1,1], [2,2]],
+    [[0,2], [1,1], [2,0]],
+    
     ];
 
+    const getWinningCombos = () => winCombos;
+
+
     const getBoard = () => board;
-    const getWinningCombos = () => winningCombos;
 
     const placeMarker = (rowSelection, columnSelection, player) => {
 
@@ -65,7 +69,6 @@ const gameBoard = (function CreateGameboard() {
 
 })();
 
-gameBoard.printBoard();
 
 
 function Cell() {
@@ -98,10 +101,12 @@ player2 = "Player 2"
         {
             name: player1,
             marker: 1,
+            moves: [],
         },
         {
             name: player2,
             marker: 2,
+            moves: [],
         }
     ];
 
@@ -129,23 +134,32 @@ player2 = "Player 2"
             board.placeMarker(rowPlacement, columnPlacement, getActivePlayer().marker);
             console.log(`${getActivePlayer().name} has moved`);
 
-            switchPlayer();
+            //Add functionality to check for a winner and handle that logic
+            getActivePlayer().moves.push([rowPlacement, columnPlacement]);
+
+
+
+            //switchPlayer();
             printNewRound();
-    
+
         } else {
                 alert("spot already played");
         }
 
-        
+    };
+
+    const hasWon = () => {
+
 
     };
 
-    //printNewRound();
+    printNewRound();
 
     return {
 
         playRound,
         getActivePlayer,
+        hasWon,
 
     }
 
