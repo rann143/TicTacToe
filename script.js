@@ -135,11 +135,15 @@ player2 = "Player 2"
             console.log(`${getActivePlayer().name} has moved`);
 
             //Add functionality to check for a winner and handle that logic
-            getActivePlayer().moves.push([rowPlacement, columnPlacement]);
+            // getActivePlayer().moves.push([rowPlacement, columnPlacement]);
+
+            if (hasWon() === true) {
+                alert(`${getActivePlayer().name} WINS!!!`)
+            }
 
 
 
-            //switchPlayer();
+            switchPlayer();
             printNewRound();
 
         } else {
@@ -150,6 +154,54 @@ player2 = "Player 2"
 
     const hasWon = () => {
 
+        //logic for horizontal wins (this is definitely not the best way to go about this. Comeback to figure this out)
+        if ((board.getBoard()[0][0].getValue() === 1 && board.getBoard()[0][1].getValue() === 1 && board.getBoard()[0][2].getValue() === 1) || 
+        (board.getBoard()[0][0].getValue() === 2 && board.getBoard()[0][1].getValue() === 2 && board.getBoard()[0][2].getValue() === 2)) 
+        {
+            return true;
+
+        } 
+        else if ((board.getBoard()[1][0].getValue() === 1 && board.getBoard()[1][1].getValue() === 1 && board.getBoard()[1][2].getValue() === 1) || 
+        (board.getBoard()[1][0].getValue() === 2 && board.getBoard()[1][1].getValue() === 2 && board.getBoard()[1][2].getValue() === 2)) 
+        {
+            return true;
+        }
+        else if ((board.getBoard()[2][0].getValue() === 1 && board.getBoard()[2][1].getValue() === 1 && board.getBoard()[2][2].getValue() === 1) || 
+        (board.getBoard()[2][0].getValue() === 2 && board.getBoard()[2][1].getValue() === 2 && board.getBoard()[2][2].getValue() === 2)) 
+        {
+            return true;
+        }
+        // logic for vertical wins
+        else if ((board.getBoard()[0][0].getValue() === 1 && board.getBoard()[1][0].getValue() === 1 && board.getBoard()[2][0].getValue() === 1) || 
+        (board.getBoard()[0][0].getValue() === 2 && board.getBoard()[1][0].getValue() === 2 && board.getBoard()[2][0].getValue() === 2)) 
+        {
+            return true;
+
+        } 
+        else if ((board.getBoard()[0][1].getValue() === 1 && board.getBoard()[1][1].getValue() === 1 && board.getBoard()[2][1].getValue() === 1) || 
+        (board.getBoard()[0][1].getValue() === 2 && board.getBoard()[1][1].getValue() === 2 && board.getBoard()[2][1].getValue() === 2)) 
+        {
+            return true;
+        }
+        else if ((board.getBoard()[0][2].getValue() === 1 && board.getBoard()[1][2].getValue() === 1 && board.getBoard()[2][2].getValue() === 1) || 
+        (board.getBoard()[0][2].getValue() === 2 && board.getBoard()[1][2].getValue() === 2 && board.getBoard()[2][2].getValue() === 2)) 
+        {
+            return true;
+        }
+        // logic for diagonals
+        else if ((board.getBoard()[0][0].getValue() === 1 && board.getBoard()[1][1].getValue() === 1 && board.getBoard()[2][2].getValue() === 1) || 
+        (board.getBoard()[0][0].getValue() === 2 && board.getBoard()[1][1].getValue() === 2 && board.getBoard()[2][2].getValue() === 2)) 
+        {
+            return true;
+        }
+        else if ((board.getBoard()[0][2].getValue() === 1 && board.getBoard()[1][1].getValue() === 1 && board.getBoard()[2][0].getValue() === 1) || 
+        (board.getBoard()[0][2].getValue() === 2 && board.getBoard()[1][1].getValue() === 2 && board.getBoard()[2][0].getValue() === 2)) 
+        {
+            return true;
+        }
+
+        return false;
+        
 
     };
 
