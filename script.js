@@ -138,7 +138,11 @@ player2 = "Player 2"
             // getActivePlayer().moves.push([rowPlacement, columnPlacement]);
 
             if (hasWon() === true) {
-                alert(`${getActivePlayer().name} WINS!!!`)
+                alert(`${getActivePlayer().name} WINS!!!`);
+            } 
+            
+            else if (board.getBoard().every(row => row.every(isFilled)) && hasWon() === false) {
+                alert('Tie Game!');
             }
 
 
@@ -151,6 +155,8 @@ player2 = "Player 2"
         }
 
     };
+
+    const isFilled = (cell) => cell.getValue() !== 0;
 
     const hasWon = () => {
 
