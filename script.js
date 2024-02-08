@@ -1,5 +1,7 @@
 
 const gameBoard = (function CreateGameboard() {
+   
+   
     const rows = 3;
     const columns = 3;
     const board = [];
@@ -63,7 +65,7 @@ const gameBoard = (function CreateGameboard() {
 
 
 function Cell() {
-    let value = 0;
+    let value = "";
 
     const addMarker = (player) => {
         value = player;
@@ -78,7 +80,6 @@ function Cell() {
 
 }
 
-
 function GameController(
 
 player1 = "Player 1",
@@ -91,11 +92,11 @@ player2 = "Player 2"
     const players = [
         {
             name: player1,
-            marker: 1,
+            marker: "X",
         },
         {
             name: player2,
-            marker: 2,
+            marker: "O",
         }
     ];
 
@@ -118,7 +119,7 @@ player2 = "Player 2"
 
     const playRound = (rowPlacement, columnPlacement) => {
 
-        if (board.getBoard()[rowPlacement][columnPlacement].getValue() === 0) {
+        if (board.getBoard()[rowPlacement][columnPlacement].getValue() === "") {
 
             board.placeMarker(rowPlacement, columnPlacement, getActivePlayer().marker);
             console.log(`${getActivePlayer().name} has moved`);
@@ -144,13 +145,13 @@ player2 = "Player 2"
 
     };
 
-    const isFilled = (cell) => cell.getValue() !== 0;
+    const isFilled = (cell) => cell.getValue() !== "";
 
     const hasWon = () => {
 
         for (let i = 0; i < 3; i++) {
             // check if row i match and aren’t 0
-            if (board.getBoard()[i][0].getValue() > 0
+            if (board.getBoard()[i][0].getValue() !== ""
                 && board.getBoard()[i][0].getValue() == board.getBoard()[i][1].getValue()
                 && board.getBoard()[i][1].getValue() == board.getBoard()[i][2].getValue()) {
                 return true;
@@ -159,7 +160,7 @@ player2 = "Player 2"
 
         for (let i = 0; i < 3; i++) {
             // check if column i match and aren’t 0
-            if (board.getBoard()[0][i].getValue() > 0
+            if (board.getBoard()[0][i].getValue() !== ""
                 && board.getBoard()[0][i].getValue() == board.getBoard()[1][i].getValue()
                 && board.getBoard()[1][i].getValue() == board.getBoard()[2][i].getValue()) {
                 return true;
@@ -168,7 +169,7 @@ player2 = "Player 2"
 
         for (let i = 0; i < 1; i++) {
             // check if back diagonal spaces are matching
-            if (board.getBoard()[i][i].getValue() > 0
+            if (board.getBoard()[i][i].getValue() !== ""
                 && board.getBoard()[i][i].getValue() == board.getBoard()[(i + 1)][(i + 1)].getValue()
                 && board.getBoard()[(i + 1)][(i + 1)].getValue() == board.getBoard()[(i + 2)][(i + 2)].getValue()) {
                     return true
@@ -177,7 +178,7 @@ player2 = "Player 2"
 
         for (let i = 0; i < 1; i++) {
             //check if forward diagonal spaces are matching
-            if (board.getBoard()[i][(i+2)].getValue() > 0
+            if (board.getBoard()[i][(i+2)].getValue() !== ""
                 && board.getBoard()[i][(i + 2)].getValue() == board.getBoard()[(i + 1)][(i + 1)].getValue()
                 && board.getBoard()[(i + 1)][(i + 1)].getValue() == board.getBoard()[(i + 2)][i].getValue()) {
                     return true
@@ -251,7 +252,7 @@ player2 = "Player 2"
 
 
 
-function ScreenController() {
+const display = (function ScreenController() {
 
     const game = GameController();
     const playerTurnDiv = document.querySelector(".turn");
@@ -266,34 +267,27 @@ function ScreenController() {
 
         playerTurnDiv.textContent = `${activePlayer.name}'s Move!`;
 
-        board.forEach(row => {
-            
-            row.forEach((cell, colIndex) => {
+        board.forEach((row, index0) => {
+
+            row.forEach((cell, index) => {
             const cellButton = document.createElement("button");
             cellButton.classList.add('cell');
         
-            cellButton.dataset.col = colIndex;
+            cellButton.dataset.row = index0;
+            cellButton.dataset.column = index;
             cellButton.textContent = cell.getValue();
+            cellButton.addEventListener('click', () => {
+                game.playRound(cellButton.dataset.row, cellButton.dataset.column);
+                cellButton.textContent = cell.getValue();
+            })
             boardDiv.appendChild(cellButton);
             })
         })
+
+        
 
     }
 
     updateScreen();
 
-    function clickHandlerBoard(e) {
-        const selectedRow = e.target.dataset.rowIndex;
-        const selectedCol = e.target.dataset.colIndex;
-        if (!selectedRow || !selectedCol) return;
-
-        game.playRound(selectedRow, selectedCol);
-        updateScreen();
-    }
-
-    boardDiv.addEventListener('click', clickHandlerBoard);
-
-
-}
-
-ScreenController();
+})();
